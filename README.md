@@ -6,7 +6,6 @@ Deployed Version:
 
 TBD
 
-
 ## ✨ Project Overview
 
 At **Donna Vino**, we aim to empower our team to manage the eCommerce platform efficiently. This dashboard allows administrators to:

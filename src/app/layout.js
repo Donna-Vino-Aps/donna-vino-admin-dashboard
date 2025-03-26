@@ -9,8 +9,6 @@ import { CredentialsContext } from "../context/credentialsContext";
 import { logError } from "@/utils/logging";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import Breadcrumb from "@/components/BreadCrumb/BreadCrumb";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const RootLayout = ({ children }) => {
   const [storedCredentials, setStoredCredentials] = useState(null);
@@ -33,31 +31,28 @@ const RootLayout = ({ children }) => {
   }, []);
 
   return (
-    <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID}>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <html lang="en">
-          <body className="flex flex-col min-h-screen w-full font-barlow bg-white text-foreground-normal">
-            <CredentialsContext.Provider
-              value={{ storedCredentials, setStoredCredentials }}
-            >
-              <LanguageProvider>
-                <Navbar />
-                <Breadcrumb />
-                <main
-                  className="flex-grow"
-                  role="main"
-                  data-testid="main-content"
-                >
-                  {children}
-                </main>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <html lang="en">
+        <body className="flex flex-col min-h-screen w-full font-barlow bg-white text-foreground-normal">
+          <CredentialsContext.Provider
+            value={{ storedCredentials, setStoredCredentials }}
+          >
+            <LanguageProvider>
+              <Navbar />
+              <main
+                className="flex-grow"
+                role="main"
+                data-testid="main-content"
+              >
+                {children}
+              </main>
 
-                <Footer />
-              </LanguageProvider>
-            </CredentialsContext.Provider>
-          </body>
-        </html>
-      </LocalizationProvider>
-    </GoogleOAuthProvider>
+              <Footer />
+            </LanguageProvider>
+          </CredentialsContext.Provider>
+        </body>
+      </html>
+    </LocalizationProvider>
   );
 };
 

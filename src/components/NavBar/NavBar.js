@@ -7,7 +7,6 @@ import SideBar from "../SideBar/SideBar";
 import { useLanguage } from "../../context/LanguageContext";
 
 import UserDropdown from "./UserDropdown";
-import ShoppingCart from "./ShoppingCart";
 
 const Navbar = () => {
   const { translations } = useLanguage();
@@ -53,59 +52,6 @@ const Navbar = () => {
       label: translations["navbar.home"],
       dropdown: false,
     },
-    {
-      id: "wines",
-      href: "/wines",
-      label: translations["navbar.wines"],
-      dropdown: true,
-      subHeadingsIta: ["Vini Rossi", "Vini Bianchi", "Vini Rosati"],
-      subHeadings: [
-        "navbar.wines.subh1",
-        "navbar.wines.subh2",
-        "navbar.wines.subh3",
-      ],
-      sublinks: [
-        [
-          "Chianti",
-          "Barolo",
-          "Brunello di Montalcino",
-          "Montepulciano d'Abruzzo",
-        ],
-        ["Prosecco", "Pinot Grigio"],
-        ["Chiaretto", "Cerasuolo d'Abruzzo"],
-      ],
-    },
-    {
-      id: "offers",
-      href: "/offers",
-      label: translations["navbar.offers"],
-      dropdown: false,
-    },
-    {
-      id: "grapes",
-      href: "/grapes-zones",
-      label: translations["navbar.grapes"],
-      dropdown: true,
-      subHeadings: ["navbar.grapes.sh1", "navbar.grapes.sh2"],
-      sublinks: [
-        [
-          "Montepulciano",
-          "Sangiovese",
-          "Nebbiolo",
-          "Corvina",
-          "Trebbiano",
-          "Vermentino",
-        ],
-        [
-          "Tuscany",
-          "Piedmont",
-          "Sicily",
-          "Emilia-Romagna",
-          "Lombardy",
-          "Puglia",
-        ],
-      ],
-    },
   ];
 
   const navLinksSidebar = [
@@ -115,29 +61,6 @@ const Navbar = () => {
       label: translations["navbar.home"],
       icon: "/icons/home.svg",
       dropdown: false,
-    },
-    {
-      id: "wines",
-      href: "/wines",
-      label: translations["navbar.wines"],
-      icon: "/icons/wine-glass-1.svg",
-      dropdown: true,
-      sublinks: ["Red Wines", "White Wines", "Rosé Wines"],
-    },
-    {
-      id: "offers",
-      href: "/offers",
-      label: translations["navbar.offers"],
-      icon: "/icons/offer.svg",
-      dropdown: false,
-    },
-    {
-      id: "grapeszones",
-      href: "/grapes-zones",
-      label: translations["navbar.grapes"],
-      icon: "/icons/grape-full.svg",
-      dropdown: true,
-      sublinks: ["Grapes", "Regions"],
     },
     {
       id: "account",
@@ -298,7 +221,6 @@ const Navbar = () => {
       <div className="flex justify-end w-full items-center gap-5">
         <div className="flex gap-3 lg:gap-5 items-center md:mr-6 relative bottom-[2px]">
           <UserDropdown />
-          <ShoppingCart />
           <div className="lg:hidden w-[1.5rem] h-[1.5rem] ml-2 relative top-[1px]">
             <button
               onClick={toggleMenu}

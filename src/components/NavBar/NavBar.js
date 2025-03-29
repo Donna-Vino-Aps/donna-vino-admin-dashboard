@@ -1,40 +1,77 @@
-import React from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
-import LanguageSwitch from "../NavBar/LanguageSwitch";
-import { LanguageProvider } from "../../context/LanguageContext";
+"use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React, { useState } from "react";
+import LanguageSwitch from "../../components/NavBar/LanguageSwitch";
+import { useLanguage } from "../../context/LanguageContext";
 
-describe("LanguageSwitch component", () => {
-  test("should render LanguageSwitch component correctly", () => {
-    render(
-      <LanguageProvider>
-        <LanguageSwitch />
-      </LanguageProvider>,
-    );
+const Navbar = () => {
+  const { translations } = useLanguage();
+  const pathname = usePathname();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    const languageSwitch = screen.getByTestId("language-switch");
-    expect(languageSwitch).toBeInTheDocument();
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
-    const englishIcon = screen.getByTestId("en-icon");
-    expect(englishIcon).toBeInTheDocument();
+  const navLinks = [
+    { id: "home", href: "/", label: translations["navbar.home"] },
+  ];
 
-    const denmarkIcon = screen.getByTestId("dk-icon");
-    expect(denmarkIcon).toBeInTheDocument();
-  });
+  return (
+    <header>
+      <nav
+        className="flex flex-col-1 w-full h-[7.18rem] md:h-[13.12rem] justify-between items-center px-8 py-6 gap-2 z-50"
+        aria-label="Main Navigation"
+      >
+        <Link href="/" data-testid="navbar-brand" aria-label="Go to home">
+          <img
+            src="/images/donna-vino-logo-transparent.png"
+            alt="Donna Vino Logo Navbar - a brand for wine tastings and experiences"
+            className="w-[6.25rem] h-[4.31rem] md:w-[7.75rem] md:h-[5.37rem]"
+          />
+        </Link>
+        <>
+          <div className="sm:hidden w-[1.5rem] h-[1.5rem]">
+            <button
+              onClick={toggleMenu}
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-menu"
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              data-testid="menu-toggle"
+            >
+              <img src="/icons/menu.svg" alt="" />
+            </button>
+          </div>
+          <div
+            id="desktop-menu"
+            role="menu"
+            className={`sm:flex sm:items-center md:space-x-4 ${
+              isMenuOpen ? "block" : "hidden"
+            }`}
+          >
+            {navLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className={`rounded-md px-3 py-2 text-titleMedium ${
+                  pathname === link.href
+                    ? "font-bold underline"
+                    : "opacity-70 hover:opacity-100"
+                }`}
+                data-testid={`nav-link-${link.id}`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        </>
+        <div className="w-[5.12rem] h-[2.87rem]">
+          <LanguageSwitch />
+        </div>
+      </nav>
+    </header>
+  );
+};
 
-  test("should have the correct class when the icon is clicked", () => {
-    render(
-      <LanguageProvider>
-        <LanguageSwitch />
-      </LanguageProvider>,
-    );
-
-    const englishIcon = screen.getByTestId("en-icon");
-    expect(englishIcon).toHaveClass("bg-primary-light");
-
-    const denmarkIcon = screen.getByTestId("dk-icon");
-    fireEvent.click(denmarkIcon);
-
-    expect(denmarkIcon).toHaveClass("bg-primary-light");
-    expect(englishIcon.classList.contains("bg-primary-light")).toBe(false);
-  });
-});
+export default Navbar;

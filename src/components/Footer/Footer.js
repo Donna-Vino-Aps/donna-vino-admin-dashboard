@@ -2,8 +2,11 @@
 
 import React from "react";
 import Link from "next/link";
+import { useLanguage } from "../../context/LanguageContext";
 
 const Footer = () => {
+  const { translations } = useLanguage();
+
   return (
     <footer
       className="flex text-white text-center py-4 h-96 bg-[#2F2E2E] md:h-[26.625rem] items-center justify-center"
@@ -22,7 +25,7 @@ const Footer = () => {
 
         <div className="flex flex-col order-1 md:order-4 items-center md:relative md:top-5">
           <h4 className="text-bodyLarge text-semibold mb-1 md:mb-3 md:mt-3">
-            Follow Us
+            {translations["footer.follow"]}
           </h4>
           <div
             className="flex gap-4 justify-center mt-3 mb-1"

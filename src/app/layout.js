@@ -7,20 +7,14 @@ import Navbar from "../components/NavBar/NavBar.js";
 import { LanguageProvider } from "../context/LanguageContext";
 import { CredentialsContext } from "../context/credentialsContext";
 import { logError } from "@/utils/logging";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 const RootLayout = ({ children }) => {
   const [storedCredentials, setStoredCredentials] = useState(null);
 
-  const checkLoginCredentials = async () => {
+  const checkLoginCredentials = () => {
     try {
       const result = localStorage.getItem("donna-vino-e-commerce");
-      if (result !== null) {
-        setStoredCredentials(JSON.parse(result));
-      } else {
-        setStoredCredentials(null);
-      }
+      setStoredCredentials(result ? JSON.parse(result) : null);
     } catch (error) {
       logError("Error retrieving stored credentials:", error);
     }
@@ -28,31 +22,34 @@ const RootLayout = ({ children }) => {
 
   useEffect(() => {
     checkLoginCredentials();
+
+    const handleStorageChange = () => {
+      checkLoginCredentials();
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
   }, []);
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <html lang="en">
-        <body className="flex flex-col min-h-screen w-full font-barlow bg-white text-foreground-normal">
-          <CredentialsContext.Provider
-            value={{ storedCredentials, setStoredCredentials }}
-          >
-            <LanguageProvider>
-              <Navbar />
-              <main
-                className="flex-grow"
-                role="main"
-                data-testid="main-content"
-              >
-                {children}
-              </main>
+    <html lang="en">
+      <body className="flex flex-col min-h-screen w-full font-barlow bg-white text-foreground-normal">
+        <CredentialsContext.Provider
+          value={{ storedCredentials, setStoredCredentials }}
+        >
+          <LanguageProvider>
+            <Navbar />
+            <main className="flex-grow" role="main" data-testid="main-content">
+              {children}
+            </main>
 
-              <Footer />
-            </LanguageProvider>
-          </CredentialsContext.Provider>
-        </body>
-      </html>
-    </LocalizationProvider>
+            <Footer />
+          </LanguageProvider>
+        </CredentialsContext.Provider>
+      </body>
+    </html>
   );
 };
 

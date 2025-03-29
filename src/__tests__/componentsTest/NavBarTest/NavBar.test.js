@@ -1,7 +1,7 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
-import LanguageSwitch from "../NavBar/LanguageSwitch";
-import { LanguageProvider } from "../../context/LanguageContext";
+import LanguageSwitch from "../../../components/NavBar/LanguageSwitch";
+import { LanguageProvider } from "../../../context/LanguageContext";
 
 describe("LanguageSwitch component", () => {
   test("should render LanguageSwitch component correctly", () => {

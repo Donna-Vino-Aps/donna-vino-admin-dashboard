@@ -1,18 +1,12 @@
-"use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import LanguageSwitch from "../../components/NavBar/LanguageSwitch";
 import { useLanguage } from "../../context/LanguageContext";
 
 const Navbar = () => {
   const { translations } = useLanguage();
   const pathname = usePathname();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
 
   const navLinks = [
     { id: "home", href: "/", label: translations["navbar.home"] },
@@ -21,7 +15,7 @@ const Navbar = () => {
   return (
     <header>
       <nav
-        className="flex flex-col-1 w-full h-[7.18rem] md:h-[13.12rem] justify-between items-center px-8 py-6 gap-2 z-50"
+        className="flex w-full h-[7.18rem] md:h-[13.12rem] justify-between items-center px-8 py-6 gap-2 z-50"
         aria-label="Main Navigation"
       >
         <Link href="/" data-testid="navbar-brand" aria-label="Go to home">
@@ -31,41 +25,26 @@ const Navbar = () => {
             className="w-[6.25rem] h-[4.31rem] md:w-[7.75rem] md:h-[5.37rem]"
           />
         </Link>
-        <>
-          <div className="sm:hidden w-[1.5rem] h-[1.5rem]">
-            <button
-              onClick={toggleMenu}
-              aria-expanded={isMenuOpen}
-              aria-controls="mobile-menu"
-              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-              data-testid="menu-toggle"
+        <div
+          id="desktop-menu"
+          role="menu"
+          className="flex items-center space-x-4"
+        >
+          {navLinks.map((link) => (
+            <Link
+              key={link.label}
+              href={link.href}
+              className={`rounded-md px-3 py-2 text-titleMedium ${
+                pathname === link.href
+                  ? "font-bold underline"
+                  : "opacity-70 hover:opacity-100"
+              }`}
+              data-testid={`nav-link-${link.id}`}
             >
-              <img src="/icons/menu.svg" alt="" />
-            </button>
-          </div>
-          <div
-            id="desktop-menu"
-            role="menu"
-            className={`sm:flex sm:items-center md:space-x-4 ${
-              isMenuOpen ? "block" : "hidden"
-            }`}
-          >
-            {navLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                className={`rounded-md px-3 py-2 text-titleMedium ${
-                  pathname === link.href
-                    ? "font-bold underline"
-                    : "opacity-70 hover:opacity-100"
-                }`}
-                data-testid={`nav-link-${link.id}`}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-        </>
+              {link.label}
+            </Link>
+          ))}
+        </div>
         <div className="w-[5.12rem] h-[2.87rem]">
           <LanguageSwitch />
         </div>
